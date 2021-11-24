@@ -30,34 +30,13 @@ Parameters:
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
   LatestAmiId:
     Type : String
-    Default: ami-05801d0a3c8e4c443
+    Default: ami-087c17d1fe0178315
   IAMRole:
     Description: EC2 attached IAM role
     Type: String
-    Default: CloudWatchAgentAdminRole
+    Default: LabRole
 Resources:
-  ec2Role:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Sub ec2Role-${AWS::StackName}
-      AssumeRolePolicyDocument:
-        Statement:
-          - Action:
-              - sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service:
-                - ec2.amazonaws.com
-        Version: '2012-10-17'
-      ManagedPolicyArns:
-        - !Sub arn:${AWS::Partition}:iam::aws:policy/AdministratorAccess
-  ec2InstanceProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties: 
-      InstanceProfileName: !Sub ec2Role-${AWS::StackName}
-      Path: /
-      Roles: 
-        - !Ref ec2Role
+  
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
@@ -65,7 +44,7 @@ Resources:
       SecurityGroups: [!Ref 'InstanceSecurityGroup']
       KeyName: !Ref 'KeyName'
       ImageId: !Ref 'LatestAmiId'
-      IamInstanceProfile: !Ref ec2InstanceProfile
+      IamInstanceProfile: !Ref IAMRole
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-standalone-instance'
