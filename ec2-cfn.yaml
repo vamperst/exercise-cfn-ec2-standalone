@@ -4,7 +4,7 @@ Parameters:
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
     Type: AWS::EC2::KeyPair::KeyName
-    Default: fiap-lab
+    Default: vockey
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
   InstanceType:
     Description: WebServer EC2 instance type
@@ -29,12 +29,12 @@ Parameters:
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
   LatestAmiId:
-    Type : String
+    Type : AWS::EC2::Image::Id
     Default: ami-087c17d1fe0178315
   IAMRole:
     Description: EC2 attached IAM role
     Type: String
-    Default: LabRole
+    Default: LabInstanceProfile
 Resources:
   
   EC2Instance:
